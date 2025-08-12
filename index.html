@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AgroGame - Protótipo Canvas</title>
+  <title>AgroGame - Protótipo</title>
   <style>
     /* Estilo básico para centralizar e definir fonte */
     body {
@@ -29,48 +29,7 @@
 <body>
   <canvas id="appCanvas" width="375" height="812" tabindex="0" aria-label="Protótipo do app AgroGame"></canvas>
   <script src="scripts/app.js"></script>
-  <script>
-    // Obtém o elemento do canvas e o contexto 2D
-    const canvas = document.getElementById('appCanvas');
-    const ctx = canvas.getContext('2d');
 
-    // Função para desenhar um retângulo arredondado
-    function drawRoundedRect(x, y, width, height, radius, fillStyle) {
-      ctx.fillStyle = fillStyle;
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + width - radius, y);
-      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-      ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-      ctx.lineTo(x + radius, y + height);
-      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    // Função para desenhar texto
-    function drawText(text, x, y, fontSize, fillStyle, fontFamily, textAlign, fontWeight) {
-      ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-      ctx.fillStyle = fillStyle;
-      ctx.textAlign = textAlign;
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, x, y);
-    }
-
-    // Desenha o fundo do protótipo
-    drawRoundedRect(0, 0, canvas.width, canvas.height, 12, '#FFFFFF');
-
-    // Desenha o cabeçalho
-    drawRoundedRect(0, 0, canvas.width, 100, 12, '#4CAF50');
-    drawText('AgroGame', canvas.width / 2, 50, 24, '#FFFFFF', 'Poppins', 'center', 'bold');
-
-    // Desenha o botão "Recompensas"
-    drawRoundedRect(20, 700, canvas.width - 40, 48, 8, '#F8C22E');
-    drawText('Recompensas', 20 + (canvas.width - 40) / 2, 730, 18, '#000', 'Poppins', 'center', 'bold');
-  </script>
 </body>
 
 </html>
