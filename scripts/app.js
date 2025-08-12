@@ -11,6 +11,19 @@ let selectedActivity = null;
 // Pontos atuais do pecuarista
 let currentPoints = 1250;
 
+let cadastroData = {
+  tipoPessoa: "",
+  cpfCnpj: "",
+  nome: "",
+  dataNascimento: "",
+  email: "",
+  cep: "",
+  logradouro: "",
+  numero: "",
+  complemento: ""
+};
+
+
 // Lista de recompensas disponíveis
 const rewards = [
   { id: 1, title: "Desconto de R$50 na compra", cost: 1000 },
@@ -70,20 +83,28 @@ function drawText(text, x, y, fontSize = 16, color = '#000', fontFamily = 'Open 
 function drawLogin() {
   ctx.clearRect(0, 0, width, height);
 
-  // Fundo branco
+  // Fundo
   drawRoundedRect(0, 0, width, height, 0, '#fff');
 
-  // Logo AgroGame
-  drawText('AgroGame', width / 2, 180, 48, '#4CAF50', 'Poppins', 'center', 'bold');
+  drawText('AgroGame', width / 2, 80, 32, '#4CAF50', 'Poppins', 'center', 'bold');
 
-  // Caixa de input falsa
-  drawRoundedRect(37, 270, 300, 48, 8, '#F9F6F1');
-  drawText('Telefone ou CPF', 45, 300, 16, '#666');
+  // Campo CPF/CNPJ
+  drawRoundedRect(37, 200, 300, 48, 8, '#F5F5F5');
+  drawText('CPF ou CNPJ', 50, 230, 16, '#999', 'Open Sans', 'start');
+
+  // Campo Senha
+  drawRoundedRect(37, 270, 300, 48, 8, '#F5F5F5');
+  drawText('Senha', 50, 300, 16, '#999', 'Open Sans', 'start');
 
   // Botão Entrar
   drawRoundedRect(37, 340, 300, 48, 8, '#4CAF50');
-  drawText('Entrar', width / 2, 375, 20, '#fff', 'Poppins', 'center', 'bold');
+  drawText('Entrar', width / 2, 370, 20, '#fff', 'Poppins', 'center', 'bold');
+
+  // Botão Cadastrar
+  drawRoundedRect(37, 400, 300, 48, 8, '#FFC107');
+  drawText('Cadastrar', width / 2, 430, 20, '#fff', 'Poppins', 'center', 'bold');
 }
+
 
 // Tela Home com lista de atividades
 function drawHome() {
@@ -96,6 +117,10 @@ function drawHome() {
   drawRoundedRect(0, 0, width, 80, 0, '#4CAF50');
   drawText(`Pontos: 1250`, 20, 45, 18, '#fff', 'Poppins', 'start', 'bold');
 
+  // Botão Sair (topo direito)
+  drawRoundedRect(width - 90, 20, 70, 36, 8, '#E53935');
+  drawText('Sair', width - 55, 45, 16, '#fff', 'Poppins', 'center', 'bold');
+
   // Lista atividades
   activities.forEach((act, index) => {
     let y = 120 + index * 80;
@@ -103,10 +128,9 @@ function drawHome() {
     drawText(`${act.title} (+${act.points} pts)`, 30, y + 35, 16, '#000');
   });
 
-  // Botão Recompensas na parte inferior
-  const btnWidth = width - 40;
-  drawRoundedRect(20, 700, btnWidth, 48, 8, '#F8C22E');
-  drawText('Recompensas', 20 + btnWidth / 2, 730, 18, '#000', 'Poppins', 'center', 'bold');
+  // Botão Recompensas
+  drawRoundedRect(20, 700, width - 40, 48, 8, '#F8C22E');
+  drawText('Recompensas', 20 + (width - 40) / 2, 730, 18, '#000', 'Poppins', 'center', 'bold');
 }
 
 // Tela de Detalhe da Atividade
@@ -170,8 +194,21 @@ canvas.addEventListener('click', (evt) => {
     if (isInside(x, y, 37, 340, 300, 48)) {
       currentScreen = 'home';
       drawHome();
+      return;
+    }
+    // Botão Cadastrar
+    if (isInside(x, y, 37, 400, 300, 48)) {
+      currentScreen = 'register';
+      drawRegister();
+      return;
     }
   } else if (currentScreen === 'home') {
+    // Botão Sair (topo direito)
+    if (isInside(x, y, width - 90, 20, 70, 36)) {
+      currentScreen = 'login';
+      drawLogin();
+      return;
+    }
     // Clique nas atividades
     for (let i = 0; i < activities.length; i++) {
       let yStart = 120 + i * 80;
@@ -203,7 +240,62 @@ canvas.addEventListener('click', (evt) => {
       drawHome();
     }
   }
+
+  else if (currentScreen === 'login') {
+  if (isInside(x, y, 37, 340, 300, 48)) {
+    // Entrar
+    currentScreen = 'home';
+    drawHome();
+  }
+  if (isInside(x, y, 37, 400, 300, 48)) {
+    // Ir para Cadastro
+    currentScreen = 'register';
+    drawRegister();
+  }
+}
+
+else if (currentScreen === 'register') {
+  if (isInside(x, y, 37, 640, 300, 48)) {
+    // Botão Salvar Cadastro
+    alert('Cadastro salvo com sucesso!');
+    currentScreen = 'login';
+    drawLogin();
+    return;
+  }
+  // Botão Voltar
+  if (isInside(x, y, 37, 700, 300, 48)) {
+    currentScreen = 'login';
+    drawLogin();
+    return;
+  }
+}
 });
+
+function drawRegister() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Fundo branco
+  drawRoundedRect(0, 0, width, height, 0, '#fff');
+
+  // Título
+  drawText('Cadastro', width / 2, 80, 32, '#4CAF50', 'Poppins', 'center', 'bold');
+
+  // Campos de exemplo
+  drawRoundedRect(37, 150, 300, 48, 8, '#F5F5F5');
+  drawText('Nome', 50, 180, 16, '#999', 'Open Sans', 'start');
+  drawRoundedRect(37, 210, 300, 48, 8, '#F5F5F5');
+  drawText('CPF ou CNPJ', 50, 240, 16, '#999', 'Open Sans', 'start');
+  drawRoundedRect(37, 270, 300, 48, 8, '#F5F5F5');
+  drawText('E-mail', 50, 300, 16, '#999', 'Open Sans', 'start');
+
+  // Botão Salvar Cadastro (verde, acima do Voltar)
+  drawRoundedRect(37, 640, 300, 48, 8, '#43A047'); // Green for primary action
+  drawText('Salvar Cadastro', width / 2, 670, 20, '#fff', 'Poppins', 'center', 'bold');
+
+  // Botão Voltar (cinza, na base)
+  drawRoundedRect(37, 700, 300, 48, 8, '#BDBDBD'); // Gray for secondary action
+  drawText('Voltar', width / 2, 730, 20, '#fff', 'Poppins', 'center', 'bold');
+}
 
 // Desenha a tela inicial
 drawLogin();
