@@ -128,6 +128,10 @@ function drawHome() {
     drawText(`${act.title} (+${act.points} pts)`, 30, y + 35, 16, '#000');
   });
 
+  // Botão Adicionar Gerente
+  drawRoundedRect(20, 640, width - 40, 48, 8, '#1976D2'); // Blue for action
+  drawText('Adicionar Gerente', 20 + (width - 40) / 2, 670, 18, '#fff', 'Poppins', 'center', 'bold');
+
   // Botão Recompensas
   drawRoundedRect(20, 700, width - 40, 48, 8, '#F8C22E');
   drawText('Recompensas', 20 + (width - 40) / 2, 730, 18, '#000', 'Poppins', 'center', 'bold');
@@ -219,6 +223,12 @@ canvas.addEventListener('click', (evt) => {
         return;
       }
     }
+    // Botão Adicionar Gerente
+    if (isInside(x, y, 20, 640, width - 40, 48)) {
+      currentScreen = 'addManager';
+      drawAddManager();
+      return;
+    }
     // Botão Recompensas
     if (isInside(x, y, 20, 700, width - 40, 48)) {
       currentScreen = 'rewards';
@@ -269,6 +279,22 @@ else if (currentScreen === 'register') {
     return;
   }
 }
+
+else if (currentScreen === 'addManager') {
+    // Botão Salvar Gerente
+    if (isInside(x, y, 37, 640, 300, 48)) {
+      alert('Gerente cadastrado com sucesso!');
+      currentScreen = 'home';
+      drawHome();
+      return;
+    }
+    // Botão Voltar
+    if (isInside(x, y, 37, 700, 300, 48)) {
+      currentScreen = 'home';
+      drawHome();
+      return;
+    }
+  }
 });
 
 function drawRegister() {
@@ -294,6 +320,33 @@ function drawRegister() {
 
   // Botão Voltar (cinza, na base)
   drawRoundedRect(37, 700, 300, 48, 8, '#BDBDBD'); // Gray for secondary action
+  drawText('Voltar', width / 2, 730, 20, '#fff', 'Poppins', 'center', 'bold');
+}
+
+// Nova tela: Adicionar Gerente
+function drawAddManager() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Fundo
+  drawRoundedRect(0, 0, width, height, 0, '#fff');
+
+  // Título
+  drawText('Adicionar Gerente', width / 2, 80, 28, '#1976D2', 'Poppins', 'center', 'bold');
+
+  // Campo Nome
+  drawRoundedRect(37, 150, 300, 48, 8, '#F5F5F5');
+  drawText('Nome', 50, 180, 16, '#999', 'Open Sans', 'start');
+
+  // Campo Email
+  drawRoundedRect(37, 210, 300, 48, 8, '#F5F5F5');
+  drawText('Email', 50, 240, 16, '#999', 'Open Sans', 'start');
+
+  // Botão Salvar Gerente (azul)
+  drawRoundedRect(37, 640, 300, 48, 8, '#1976D2');
+  drawText('Salvar Gerente', width / 2, 670, 20, '#fff', 'Poppins', 'center', 'bold');
+
+  // Botão Voltar (cinza)
+  drawRoundedRect(37, 700, 300, 48, 8, '#BDBDBD');
   drawText('Voltar', width / 2, 730, 20, '#fff', 'Poppins', 'center', 'bold');
 }
 
