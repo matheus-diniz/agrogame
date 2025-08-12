@@ -37,6 +37,18 @@
     let currentScreen = 'login';  // telas: login, home, activityDetail
     let selectedActivity = null;
 
+    // Pontos atuais do pecuarista
+		let currentPoints = 1250;
+
+		// Lista de recompensas disponíveis
+		const rewards = [
+		  { id: 1, title: "Desconto de R$50 na compra", cost: 1000 },
+		  { id: 2, title: "Kit de manejo de pasto", cost: 1800 },
+		  { id: 3, title: "Consultoria gratuita 1h", cost: 2500 },
+		  { id: 4, title: "Camiseta AgroGame", cost: 500 }
+		];
+
+
     // Lista de atividades para o protótipo
     const activities = [
       {
@@ -150,6 +162,32 @@
       drawText('Enviar foto e concluir', width / 2, 315, 18, '#fff', 'Poppins', 'center', 'bold');
     }
 
+		function drawRewards() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Fundo branco
+  drawRoundedRect(0, 0, width, height, 0, '#fff');
+
+  // Cabeçalho
+  drawText('Recompensas disponíveis', 20, 80, 24, '#4CAF50', 'Poppins', 'start', 'bold');
+  drawText(`Seus pontos: ${currentPoints}`, 20, 110, 18, '#666', 'Open Sans');
+
+  // Lista de recompensas
+  rewards.forEach((reward, i) => {
+    let y = 140 + i * 70;
+    let canRedeem = currentPoints >= reward.cost;
+
+    drawRoundedRect(20, y, width - 40, 60, 8, canRedeem ? '#C8E6C9' : '#F5F5F5');
+    drawText(reward.title, 30, y + 30, 16, '#000');
+    drawText(`${reward.cost} pts`, width - 60, y + 30, 16, canRedeem ? '#388E3C' : '#AAA', 'Poppins', 'end', 'bold');
+  });
+
+  // Botão Voltar
+  drawRoundedRect(20, 700, width - 40, 48, 8, '#4CAF50');
+  drawText('Voltar', width / 2, 730, 20, '#fff', 'Poppins', 'center', 'bold');
+}
+
+
     // Função para detectar cliques dentro de área
     function isInside(x, y, rectX, rectY, rectW, rectH) {
       return x >= rectX && x <= rectX + rectW && y >= rectY && y <= rectY + rectH;
@@ -177,6 +215,21 @@
             drawActivityDetail();
             break;
           }
+const btnWidth = (width - 60) / 2;
+
+if (isInside(x, y, 40 + btnWidth, 700, btnWidth, 48)) {
+  // Botão Recompensas clicado
+  currentScreen = 'rewards';
+  drawRewards();
+  return;
+}
+
+if (isInside(x, y, 20, 700, btnWidth, 48)) {
+  // Botão Ranking (pode implementar depois)
+  alert('Ranking ainda não implementado.');
+  return;
+}
+					
         }
 
         // Clique nos botões Ranking e Recompensas (futuro)
@@ -189,6 +242,12 @@
           currentScreen = 'home';
           drawHome();
         }
+				else if (currentScreen === 'rewards') {
+  // Botão Voltar clicado
+  if (isInside(x, y, 20, 700, width - 40, 48)) {
+    currentScreen = 'home';
+    drawHome();
+  }
       }
     });
 
@@ -198,3 +257,4 @@
   </script>
 </body>
 </html>
+
